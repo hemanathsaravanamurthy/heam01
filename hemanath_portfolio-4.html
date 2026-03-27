@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hemanath Saravanamurthy — Sports Management Professional</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080c0a;--bg2:#0c1210;--bg3:#111916;--green:#1a4a2e;--green-hi:#3dbb72;--gold:#c8a84b;--white:#e8ede9;--grey:#6b7a6e;--grey2:#9aaa9d;--line:rgba(255,255,255,0.055);}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--white);font-family:'Barlow',sans-serif;font-weight:300;overflow-x:hidden;}
+
+.cur{width:8px;height:8px;background:var(--green-hi);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:screen;transition:width .15s,height .15s;}
+.cur-r{width:32px;height:32px;border:1px solid rgba(61,187,114,0.45);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .2s,height .2s;}
+
+#pitch-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.055;}
+#pass-canvas{position:fixed;inset:0;z-index:1;pointer-events:none;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 56px;height:58px;display:flex;align-items:center;justify-content:space-between;transition:background .3s,border-color .3s,backdrop-filter .3s;border-bottom:1px solid transparent;}
+nav.scrolled{background:rgba(8,12,10,0.93);border-color:rgba(61,187,114,0.1);backdrop-filter:blur(16px);}
+.nav-id{display:flex;align-items:center;gap:10px;}
+.nav-dot{width:7px;height:7px;background:var(--green-hi);border-radius:50%;animation:blink 2s ease infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.nav-name{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{color:var(--grey2);text-decoration:none;font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;transition:color .2s;font-family:'Barlow Condensed',sans-serif;}
+.nav-links a:hover{color:var(--green-hi);}
+.nav-tag{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--grey);letter-spacing:.08em;border:1px solid var(--line);padding:4px 10px;border-radius:3px;}
+
+section{position:relative;z-index:10;}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;align-items:center;padding:0 56px;overflow:hidden;position:relative;}
+.hero-heat{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 500px 400px at 18% 65%,rgba(61,187,114,0.045) 0%,transparent 70%),radial-gradient(ellipse 700px 500px at 80% 30%,rgba(200,168,75,0.025) 0%,transparent 70%);}
+.hero-left{position:relative;z-index:2;max-width:680px;}
+.h-sys{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--green-hi);letter-spacing:.06em;margin-bottom:24px;opacity:0;animation:fu .7s .1s ease forwards;}
+.h-sys::before{content:'◆';font-size:7px;}
+h1.hname{font-family:'Barlow Condensed',sans-serif;font-size:clamp(58px,8.5vw,112px);font-weight:800;line-height:.9;letter-spacing:.01em;text-transform:uppercase;opacity:0;animation:fu .7s .15s ease forwards;}
+h1.hname .g{color:var(--green-hi);display:block;}
+.hdiv{width:48px;height:2px;background:linear-gradient(90deg,var(--gold),transparent);margin:22px 0;opacity:0;animation:fu .7s .25s ease forwards;}
+.hrole{font-size:clamp(13px,1.5vw,16px);color:var(--grey2);line-height:1.75;max-width:460px;opacity:0;animation:fu .7s .3s ease forwards;}
+.hrole strong{color:var(--white);font-weight:500;}
+.hmeta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px;opacity:0;animation:fu .7s .38s ease forwards;}
+.chip{display:inline-flex;align-items:center;gap:6px;background:rgba(61,187,114,0.07);border:1px solid rgba(61,187,114,0.18);border-radius:3px;padding:6px 13px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--grey2);letter-spacing:.06em;}
+.chip .d{width:5px;height:5px;background:var(--green-hi);border-radius:50%;}
+.hctas{display:flex;gap:14px;margin-top:36px;opacity:0;animation:fu .7s .46s ease forwards;}
+.bp{background:var(--green-hi);color:var(--bg);padding:13px 28px;border-radius:3px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;font-family:'Barlow Condensed',sans-serif;transition:background .2s,transform .15s;}
+.bp:hover{background:#52d688;transform:translateY(-2px);}
+.bo{border:1px solid rgba(61,187,114,0.35);color:var(--green-hi);padding:13px 28px;border-radius:3px;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;font-family:'Barlow Condensed',sans-serif;transition:background .2s,border-color .2s,transform .15s;}
+.bo:hover{background:rgba(61,187,114,.07);border-color:rgba(61,187,114,.6);transform:translateY(-2px);}
+.hstats{position:absolute;right:56px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:2px;z-index:2;opacity:0;animation:fr .8s .5s ease forwards;}
+@keyframes fr{from{opacity:0;transform:translate(20px,-50%)}to{opacity:1;transform:translate(0,-50%)}}
+.srow{background:rgba(11,26,18,0.75);border:1px solid rgba(61,187,114,0.12);border-left:3px solid var(--green-hi);padding:14px 20px;min-width:158px;backdrop-filter:blur(10px);}
+.sv{font-family:'Barlow Condensed',sans-serif;font-size:34px;font-weight:700;color:var(--green-hi);line-height:1;}
+.sl{font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--grey);margin-top:4px;font-family:'JetBrains Mono',monospace;}
+.scroll-ind{position:absolute;bottom:32px;left:56px;display:flex;align-items:center;gap:12px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;color:var(--grey);opacity:0;animation:fu .6s 1s ease forwards;}
+.strack{width:36px;height:1px;background:rgba(61,187,114,.2);overflow:hidden;position:relative;}
+.strack::after{content:'';position:absolute;inset:0;background:var(--green-hi);transform:translateX(-100%);animation:slide 2s ease infinite;}
+@keyframes slide{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+@keyframes fu{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+/* SHARED */
+.s-in{max-width:1180px;margin:0 auto;padding:100px 56px;}
+.s-hd{margin-bottom:52px;}
+.eye{display:inline-flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;color:var(--green-hi);text-transform:uppercase;margin-bottom:12px;}
+.eye::before{content:'';width:18px;height:1px;background:var(--green-hi);}
+h2.stitle{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:clamp(38px,5.5vw,68px);letter-spacing:.03em;text-transform:uppercase;line-height:.95;}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.vis{opacity:1;transform:translateY(0);}
+
+/* ABOUT */
+#about{background:var(--bg2);}
+.ag{display:grid;grid-template-columns:1fr 1.25fr;gap:72px;align-items:start;}
+.tcard{background:var(--bg3);border:1px solid rgba(61,187,114,0.1);border-radius:6px;overflow:hidden;aspect-ratio:3/4;position:relative;}
+.tpbg{position:absolute;inset:0;background:linear-gradient(180deg,#0a1c12,#0c1e14,#091610);}
+.tpsvg{position:absolute;inset:0;width:100%;height:100%;}
+.theat{position:absolute;inset:0;background:radial-gradient(ellipse 55% 45% at 50% 45%,rgba(61,187,114,0.2) 0%,transparent 70%),radial-gradient(ellipse 30% 25% at 28% 30%,rgba(200,168,75,0.13) 0%,transparent 60%),radial-gradient(ellipse 25% 20% at 72% 65%,rgba(61,187,114,0.1) 0%,transparent 60%);animation:hp 5s ease-in-out infinite;}
+@keyframes hp{0%,100%{opacity:.8}50%{opacity:1}}
+.tlbl{position:absolute;bottom:18px;left:0;right:0;text-align:center;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;color:var(--green-hi);opacity:.6;}
+.tbadge{position:absolute;top:14px;right:14px;background:rgba(200,168,75,0.15);border:1px solid rgba(200,168,75,0.35);padding:4px 10px;border-radius:3px;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-family:'JetBrains Mono',monospace;}
+.tbadge2{position:absolute;top:14px;left:14px;background:rgba(61,187,114,0.12);border:1px solid rgba(61,187,114,0.25);padding:4px 10px;border-radius:3px;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--green-hi);font-family:'JetBrains Mono',monospace;}
+.at p{font-size:15px;line-height:1.85;color:rgba(232,237,233,.65);margin-bottom:16px;}
+.at p strong{color:var(--white);font-weight:500;}
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:30px;}
+.ctag{display:flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(61,187,114,0.04);border:1px solid rgba(61,187,114,0.1);border-radius:3px;font-size:12px;color:var(--grey2);transition:background .2s,border-color .2s,color .2s,transform .15s;cursor:default;}
+.ctag:hover{background:rgba(61,187,114,0.09);border-color:rgba(61,187,114,0.28);color:var(--white);transform:translateX(3px);}
+.ci{width:5px;height:5px;background:var(--green-hi);border-radius:50%;flex-shrink:0;}
+
+/* EXPERIENCE */
+#experience{background:var(--bg);}
+.eg{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.ecard{background:var(--bg2);border:1px solid rgba(255,255,255,0.055);border-radius:6px;overflow:hidden;transition:transform .25s,border-color .25s,box-shadow .25s;}
+.ecard:hover{transform:translateY(-5px);border-color:rgba(61,187,114,0.22);box-shadow:0 16px 48px rgba(0,0,0,.4),0 0 0 1px rgba(61,187,114,.08);}
+.ehdr{height:110px;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:14px 22px;}
+.ecard:nth-child(1) .ehdr{background:linear-gradient(135deg,#040e14,#09203a);}
+.ecard:nth-child(2) .ehdr{background:linear-gradient(135deg,#070f08,#0c2318);}
+.ecard:nth-child(3) .ehdr{background:linear-gradient(135deg,#100d06,#1b1608);}
+.ecard:nth-child(4) .ehdr{background:linear-gradient(135deg,#09070f,#120e22);}
+.ehsvg{position:absolute;inset:0;width:100%;height:100%;opacity:.12;}
+.ehglow{position:absolute;top:-40px;right:-40px;width:120px;height:120px;border-radius:50%;}
+.ecard:nth-child(1) .ehglow{background:radial-gradient(circle,rgba(30,100,200,.65) 0%,transparent 70%);}
+.ecard:nth-child(2) .ehglow{background:radial-gradient(circle,rgba(61,187,114,.6) 0%,transparent 70%);}
+.ecard:nth-child(3) .ehglow{background:radial-gradient(circle,rgba(200,168,75,.6) 0%,transparent 70%);}
+.ecard:nth-child(4) .ehglow{background:radial-gradient(circle,rgba(140,60,200,.5) 0%,transparent 70%);}
+.epill{display:inline-block;background:rgba(61,187,114,0.12);border:1px solid rgba(61,187,114,0.3);color:var(--green-hi);padding:3px 10px;border-radius:2px;font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;position:relative;z-index:1;}
+.ebody{padding:20px 22px 24px;}
+.eorg{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px;}
+.etitle{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:4px;line-height:1.1;}
+.eperiod{font-family:'JetBrains Mono',monospace;font-size:8.5px;color:var(--grey);margin-bottom:14px;}
+.ebul{list-style:none;display:flex;flex-direction:column;gap:7px;}
+.ebul li{font-size:12.5px;color:rgba(232,237,233,.6);padding-left:14px;position:relative;line-height:1.5;}
+.ebul li::before{content:'';position:absolute;left:0;top:7px;width:5px;height:1px;background:var(--green-hi);}
+
+/* SKILLS */
+#skills{background:var(--bg2);}
+.skl{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start;}
+.sb{margin-bottom:32px;}
+.sbt{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--grey);margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--line);}
+.stags{display:flex;flex-wrap:wrap;gap:8px;}
+.stag{padding:7px 14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:3px;font-size:12px;color:var(--grey2);transition:background .2s,border-color .2s,color .2s,transform .15s;cursor:default;}
+.stag:hover{background:rgba(61,187,114,0.08);border-color:rgba(61,187,114,.28);color:var(--green-hi);transform:translateY(-2px);}
+.stag.g:hover{background:rgba(200,168,75,0.08);border-color:rgba(200,168,75,.28);color:var(--gold);}
+
+/* EDUCATION */
+#education{background:var(--bg);}
+.edu-g{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.edcard{background:var(--bg2);border:1px solid rgba(255,255,255,0.055);border-radius:6px;padding:26px 22px;position:relative;overflow:hidden;transition:transform .25s,border-color .25s;}
+.edcard::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green-hi),transparent);transform:scaleX(0);transition:transform .35s;}
+.edcard:hover{transform:translateY(-5px);border-color:rgba(61,187,114,0.18);}
+.edcard:hover::after{transform:scaleX(1);}
+.ednum{font-family:'Barlow Condensed',sans-serif;font-size:50px;font-weight:800;color:rgba(61,187,114,0.07);line-height:1;margin-bottom:14px;}
+.eddeg{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px;line-height:1.1;}
+.edsch{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--gold);letter-spacing:.08em;margin-bottom:4px;}
+.edyr{font-size:10px;color:var(--grey);margin-bottom:12px;font-family:'JetBrains Mono',monospace;}
+.eddesc{font-size:12px;color:rgba(232,237,233,.5);line-height:1.65;}
+.edbadge{display:inline-block;margin-top:12px;background:rgba(61,187,114,0.1);border:1px solid rgba(61,187,114,0.25);color:var(--green-hi);padding:3px 10px;border-radius:2px;font-family:'JetBrains Mono',monospace;font-size:8.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;}
+
+/* CONTACT */
+#contact{background:var(--bg2);}
+.cly{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.ctag2{font-family:'Barlow Condensed',sans-serif;font-size:clamp(18px,2.6vw,26px);font-weight:300;color:rgba(232,237,233,.5);line-height:1.55;margin-bottom:34px;}
+.ctag2 strong{color:var(--white);font-weight:600;}
+.ccards{display:flex;flex-direction:column;gap:10px;}
+.ccard{display:flex;align-items:center;gap:16px;background:var(--bg3);border:1px solid rgba(255,255,255,0.055);border-radius:5px;padding:16px 20px;text-decoration:none;transition:transform .2s,border-color .2s,background .2s;}
+.ccard:hover{transform:translateX(6px);border-color:rgba(61,187,114,.25);background:rgba(61,187,114,.04);}
+.cicon{width:36px;height:36px;border-radius:4px;background:rgba(61,187,114,0.1);border:1px solid rgba(61,187,114,.18);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.clbl{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.14em;color:var(--green-hi);text-transform:uppercase;margin-bottom:3px;}
+.cval{font-size:13px;color:var(--white);}
+.cpitch{aspect-ratio:3/4;background:var(--bg3);border:1px solid rgba(61,187,114,.1);border-radius:6px;overflow:hidden;position:relative;}
+.cpbg{position:absolute;inset:0;background:linear-gradient(180deg,#09180e,#0c1e14);}
+.cpsvg{position:absolute;inset:0;width:100%;height:100%;opacity:.2;}
+.cpheat{position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(61,187,114,.22) 0%,transparent 70%);animation:hp 4s ease-in-out infinite;}
+.cptxt{position:absolute;bottom:20px;left:0;right:0;text-align:center;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--green-hi);letter-spacing:.14em;opacity:.6;}
+
+footer{background:var(--bg);border-top:1px solid rgba(61,187,114,0.08);padding:26px 56px;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:10;}
+.fn{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green-hi);}
+.fm,.fr{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--grey);}
+
+@media(max-width:768px){
+  nav{padding:0 20px;}.nav-links,.nav-tag{display:none;}
+  .s-in{padding:70px 20px;}#hero{padding:80px 20px 60px;}
+  .hstats{display:none;}
+  .ag,.eg,.skl,.edu-g,.cly{grid-template-columns:1fr;gap:28px;}
+  footer{padding:22px 20px;flex-direction:column;gap:10px;text-align:center;}
+  .cg{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="cur" id="C"></div>
+<div class="cur-r" id="CR"></div>
+<canvas id="pitch-canvas"></canvas>
+<canvas id="pass-canvas"></canvas>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-id"><div class="nav-dot"></div><span class="nav-name">Hemanath S.</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">Profile</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-tag">Chennai, India · Available</div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-heat"></div>
+  <div class="hero-left">
+    <div class="h-sys">SYSTEM READY · SPORTS MANAGEMENT PROFESSIONAL</div>
+    <h1 class="hname">HEMANATH<span class="g">SARAVANAMURTHY</span></h1>
+    <div class="hdiv"></div>
+    <p class="hrole"><strong>Sports Operations &amp; Management Professional</strong><br>SFA Qualified Coach &middot; MSc Sport Management &middot; Facility Operations &amp; Event Support</p>
+    <div class="hmeta">
+      <div class="chip"><div class="d"></div>4+ yrs experience</div>
+      <div class="chip"><div class="d"></div>MSc Sport Management</div>
+      <div class="chip"><div class="d"></div>SFA Certified</div>
+      <div class="chip"><div class="d"></div>Chennai, India</div>
+    </div>
+    <div class="hctas">
+      <a href="#contact" class="bp">Get In Touch</a>
+      <a href="#experience" class="bo">View Experience</a>
+    </div>
+  </div>
+  <div class="hstats">
+    <div class="srow"><div class="sv">4+</div><div class="sl">Years Experience</div></div>
+    <div class="srow"><div class="sv">MSc</div><div class="sl">Sport Management</div></div>
+    <div class="srow"><div class="sv">SFA</div><div class="sl">Qualified Coach</div></div>
+    <div class="srow"><div class="sv">2</div><div class="sl">Countries Active</div></div>
+  </div>
+  <div class="scroll-ind"><div class="strack"></div>SCROLL TO EXPLORE</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="s-in">
+    <div class="s-hd reveal"><div class="eye">Professional Profile</div><h2 class="stitle">ABOUT</h2></div>
+    <div class="ag">
+      <div class="reveal">
+        <div class="tcard">
+          <div class="tpbg"></div>
+          <svg class="tpsvg" viewBox="0 0 260 350" fill="none">
+            <rect x="15" y="15" width="230" height="320" stroke="#3dbb72" stroke-width="1"/>
+            <line x1="15" y1="175" x2="245" y2="175" stroke="#3dbb72" stroke-width=".8"/>
+            <circle cx="130" cy="175" r="40" stroke="#3dbb72" stroke-width=".8"/>
+            <circle cx="130" cy="175" r="2.5" fill="#3dbb72"/>
+            <rect x="55" y="15" width="120" height="56" stroke="#3dbb72" stroke-width=".7"/>
+            <rect x="85" y="15" width="60" height="22" stroke="#3dbb72" stroke-width=".5"/>
+            <path d="M85 71 Q130 53 175 71" stroke="#3dbb72" stroke-width=".5" fill="none"/>
+            <rect x="55" y="279" width="120" height="56" stroke="#3dbb72" stroke-width=".7"/>
+            <rect x="85" y="313" width="60" height="22" stroke="#3dbb72" stroke-width=".5"/>
+            <path d="M85 279 Q130 297 175 279" stroke="#3dbb72" stroke-width=".5" fill="none"/>
+            <path d="M15 15 Q23 15 23 23" stroke="#3dbb72" stroke-width=".5" fill="none"/>
+            <path d="M245 15 Q237 15 237 23" stroke="#3dbb72" stroke-width=".5" fill="none"/>
+            <path d="M15 335 Q23 335 23 327" stroke="#3dbb72" stroke-width=".5" fill="none"/>
+            <path d="M245 335 Q237 335 237 327" stroke="#3dbb72" stroke-width=".5" fill="none"/>
+            <circle cx="130" cy="310" r="4.5" fill="rgba(61,187,114,0.75)"/>
+            <circle cx="75" cy="268" r="4.5" fill="rgba(61,187,114,0.75)"/>
+            <circle cx="185" cy="268" r="4.5" fill="rgba(61,187,114,0.75)"/>
+            <circle cx="48" cy="210" r="4.5" fill="rgba(61,187,114,0.75)"/>
+            <circle cx="130" cy="218" r="4.5" fill="rgba(61,187,114,0.75)"/>
+            <circle cx="212" cy="210" r="4.5" fill="rgba(61,187,114,0.75)"/>
+            <circle cx="75" cy="155" r="4.5" fill="rgba(61,187,114,0.75)"/>
+            <circle cx="185" cy="155" r="4.5" fill="rgba(61,187,114,0.75)"/>
+            <circle cx="48" cy="100" r="4.5" fill="rgba(200,168,75,0.85)"/>
+            <circle cx="130" cy="88" r="4.5" fill="rgba(200,168,75,0.85)"/>
+            <circle cx="212" cy="100" r="4.5" fill="rgba(200,168,75,0.85)"/>
+            <line x1="130" y1="310" x2="75" y2="268" stroke="rgba(61,187,114,0.2)" stroke-width=".6"/>
+            <line x1="130" y1="310" x2="185" y2="268" stroke="rgba(61,187,114,0.2)" stroke-width=".6"/>
+            <line x1="75" y1="268" x2="48" y2="210" stroke="rgba(61,187,114,0.2)" stroke-width=".6"/>
+            <line x1="185" y1="268" x2="212" y2="210" stroke="rgba(61,187,114,0.2)" stroke-width=".6"/>
+            <line x1="48" y1="210" x2="75" y2="155" stroke="rgba(61,187,114,0.2)" stroke-width=".6"/>
+            <line x1="212" y1="210" x2="185" y2="155" stroke="rgba(61,187,114,0.2)" stroke-width=".6"/>
+            <line x1="75" y1="155" x2="48" y2="100" stroke="rgba(61,187,114,0.2)" stroke-width=".6"/>
+            <line x1="185" y1="155" x2="212" y2="100" stroke="rgba(61,187,114,0.2)" stroke-width=".6"/>
+            <line x1="75" y1="155" x2="130" y2="88" stroke="rgba(61,187,114,0.2)" stroke-width=".6"/>
+            <line x1="185" y1="155" x2="130" y2="88" stroke="rgba(61,187,114,0.2)" stroke-width=".6"/>
+          </svg>
+          <div class="theat"></div>
+          <div class="tbadge">SFA Coach</div>
+          <div class="tbadge2">ESMS &middot; 2024</div>
+          <div class="tlbl">TACTICAL OVERVIEW &middot; HEMANATH S.</div>
+        </div>
+      </div>
+      <div class="reveal at" style="transition-delay:.12s">
+        <p>A <strong>dedicated Sports Management Professional</strong> with an MSc in Sport Management and 4+ years of progressive experience spanning sports operations, programme delivery, team supervision, and grassroots football coaching.</p>
+        <p>Scottish FA certified coach with hands-on experience in academy settings and community football. Deep expertise in <strong>facility management, event coordination, safety compliance,</strong> and stakeholder engagement — delivering inclusive, high-quality sports experiences.</p>
+        <p>Driven by a passion for <strong>athlete development</strong> and operational precision. Currently based in <strong>Chennai, India</strong> — seeking roles in Sports Operations, Programme Coordination, or Academy Management.</p>
+        <div class="cg">
+          <div class="ctag"><div class="ci"></div>Sports Programme Delivery</div>
+          <div class="ctag"><div class="ci"></div>Event &amp; Matchday Ops</div>
+          <div class="ctag"><div class="ci"></div>Facility Management</div>
+          <div class="ctag"><div class="ci"></div>Football Coaching</div>
+          <div class="ctag"><div class="ci"></div>Team Supervision</div>
+          <div class="ctag"><div class="ci"></div>Safety &amp; Safeguarding</div>
+          <div class="ctag"><div class="ci"></div>Resource Scheduling</div>
+          <div class="ctag"><div class="ci"></div>Stakeholder Engagement</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="s-in">
+    <div class="s-hd reveal"><div class="eye">Career History</div><h2 class="stitle">EXPERIENCE</h2></div>
+    <div class="eg">
+
+      <div class="ecard reveal" style="transition-delay:.05s">
+        <div class="ehdr">
+          <svg class="ehsvg" viewBox="0 0 320 110" fill="none"><rect x="8" y="8" width="304" height="94" stroke="white" stroke-width=".8"/><line x1="160" y1="8" x2="160" y2="102" stroke="white" stroke-width=".6"/><circle cx="160" cy="55" r="26" stroke="white" stroke-width=".6"/><rect x="8" y="32" width="76" height="46" stroke="white" stroke-width=".5"/><rect x="236" y="32" width="76" height="46" stroke="white" stroke-width=".5"/></svg>
+          <div class="ehglow"></div><span class="epill">Current Role</span>
+        </div>
+        <div class="ebody">
+          <div class="eorg">ESMS &mdash; Erskine Stewart's Melville Schools</div>
+          <div class="etitle">Duty Supervisor</div>
+          <div class="eperiod">Sep 2024 &ndash; Feb 2026 &middot; Edinburgh, UK</div>
+          <ul class="ebul">
+            <li>Manage daily sports operations across multiple facilities &mdash; scheduling, programme delivery, session coordination</li>
+            <li>Coordinate fixtures, venue preparation, and real-time issue resolution for seamless event delivery</li>
+            <li>Oversee safety compliance, facility readiness, and equipment management protocols</li>
+            <li>Supervise staff and handle participant inquiries to high service standards</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ecard reveal" style="transition-delay:.1s">
+        <div class="ehdr">
+          <svg class="ehsvg" viewBox="0 0 320 110" fill="none"><circle cx="160" cy="55" r="44" stroke="white" stroke-width=".8"/><circle cx="160" cy="55" r="20" stroke="white" stroke-width=".6"/><line x1="116" y1="55" x2="204" y2="55" stroke="white" stroke-width=".6"/><line x1="160" y1="11" x2="160" y2="99" stroke="white" stroke-width=".6"/><circle cx="160" cy="55" r="3.5" fill="white" opacity=".4"/></svg>
+          <div class="ehglow"></div><span class="epill">Coaching</span>
+        </div>
+        <div class="ebody">
+          <div class="eorg">South CFC, UK</div>
+          <div class="etitle">Asst. Football Coach</div>
+          <div class="eperiod">2025 &ndash; 2025 &middot; U7 Age Group</div>
+          <ul class="ebul">
+            <li>Planned age-appropriate sessions &mdash; technical skills, tactical awareness, and teamwork</li>
+            <li>Designed drills targeting passing, ball control, movement and game understanding</li>
+            <li>Promoted child safeguarding and inclusive coaching practices throughout</li>
+            <li>Delivered constructive player feedback alongside senior coaching staff</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ecard reveal" style="transition-delay:.15s">
+        <div class="ehdr">
+          <svg class="ehsvg" viewBox="0 0 320 110" fill="none"><rect x="28" y="12" width="264" height="86" stroke="white" stroke-width=".8" rx="2"/><line x1="28" y1="48" x2="292" y2="48" stroke="white" stroke-width=".6"/><line x1="28" y1="76" x2="292" y2="76" stroke="white" stroke-width=".5"/><line x1="116" y1="12" x2="116" y2="98" stroke="white" stroke-width=".5"/><line x1="204" y1="12" x2="204" y2="98" stroke="white" stroke-width=".5"/></svg>
+          <div class="ehglow"></div><span class="epill">Volunteer</span>
+        </div>
+        <div class="ebody">
+          <div class="eorg">Sports Club &mdash; Chennai, India</div>
+          <div class="etitle">Volunteer GK Coach</div>
+          <div class="eperiod">2023 &ndash; 2025</div>
+          <ul class="ebul">
+            <li>Specialist goalkeeper coaching &mdash; shot-stopping, distribution, positioning, decision-making</li>
+            <li>Developed individual training plans for goalkeepers across age groups</li>
+            <li>Integrated GKs into team tactics alongside first-team coaching staff</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ecard reveal" style="transition-delay:.2s">
+        <div class="ehdr">
+          <svg class="ehsvg" viewBox="0 0 320 110" fill="none"><path d="M36 95 Q88 18 160 52 Q232 86 284 18" stroke="white" stroke-width="1.2" fill="none"/><path d="M36 76 Q95 26 160 62 Q225 92 284 34" stroke="white" stroke-width=".6" fill="none"/><circle cx="160" cy="57" r="4.5" fill="white" opacity=".5"/><circle cx="88" cy="55" r="3" fill="white" opacity=".4"/><circle cx="232" cy="50" r="3" fill="white" opacity=".4"/></svg>
+          <div class="ehglow"></div><span class="epill">Retail Sports</span>
+        </div>
+        <div class="ebody">
+          <div class="eorg">Decathlon Sports India &mdash; Chennai</div>
+          <div class="etitle">Omni Sports Leader</div>
+          <div class="eperiod">Nov 2021 &ndash; Nov 2022</div>
+          <ul class="ebul">
+            <li>Drove sales performance contributing to approximately USD 330,000 in monthly store revenue through strategic merchandising, cross-selling, and optimized product placement across departments</li>
+            <li>Maintained visual merchandising standards ensuring products were displayed per brand guidelines, optimizing floor layout for customer flow and product visibility in a high-traffic retail environment</li>
+            <li>Executed store opening and closing procedures, managed stock organization, handled cash operations, and ensured store cleanliness met brand standards</li>
+            <li>Collaborated with team to achieve sales targets, maintained inventory accuracy, and supported smooth daily retail operations including staff coordination across departments</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="s-in">
+    <div class="s-hd reveal"><div class="eye">Capabilities</div><h2 class="stitle">SKILLS</h2></div>
+    <div class="skl">
+      <div class="reveal" style="transition-delay:.08s">
+        <div class="sb"><div class="sbt">Operations &amp; Management</div><div class="stags"><div class="stag">Sports Operations</div><div class="stag">Facility Management</div><div class="stag">Event Coordination</div><div class="stag">Matchday Operations</div><div class="stag">Programme Delivery</div><div class="stag">Resource Scheduling</div><div class="stag">Venue Preparation</div></div></div>
+        <div class="sb"><div class="sbt">Coaching &amp; Development</div><div class="stags"><div class="stag">Football Coaching (SFA)</div><div class="stag">Player Development</div><div class="stag">Session Planning</div><div class="stag">Goalkeeper Coaching</div><div class="stag">Youth Development</div><div class="stag">Academy Management</div></div></div>
+        <div class="sb"><div class="sbt">Compliance &amp; People</div><div class="stags"><div class="stag">Safety &amp; Safeguarding</div><div class="stag">Team Supervision</div><div class="stag">Staff Coordination</div><div class="stag">Stakeholder Engagement</div><div class="stag">Customer Service</div></div></div>
+      </div>
+      <div class="reveal" style="transition-delay:.16s">
+        <div class="sb"><div class="sbt">Tools &amp; Software</div><div class="stags"><div class="stag g">Microsoft Office</div><div class="stag g">PowerPoint</div><div class="stag g">Excel</div><div class="stag g">Scheduling Systems</div><div class="stag g">Performance Reporting</div></div></div>
+        <div class="sb"><div class="sbt">Specialisations</div><div class="stags"><div class="stag">Grassroots Football</div><div class="stag">Community Sport</div><div class="stag">Tactical Analysis</div><div class="stag">Sports Analytics</div><div class="stag">Performance Analysis</div></div></div>
+        <div class="sb"><div class="sbt">Languages</div><div class="stags"><div class="stag">English</div><div class="stag">Tamil</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="s-in">
+    <div class="s-hd reveal"><div class="eye">Academic Background</div><h2 class="stitle">EDUCATION</h2></div>
+    <div class="edu-g">
+      <div class="edcard reveal" style="transition-delay:.05s">
+        <div class="ednum">01</div>
+        <div class="eddeg">MSc Sport Management</div>
+        <div class="edsch">University of Stirling, UK</div>
+        <div class="edyr">Graduated 2024</div>
+        <div class="eddesc">Postgraduate study covering sports business, operations management, event management, facility management, and sports marketing.</div>
+        <div class="edbadge">Distinction</div>
+      </div>
+      <div class="edcard reveal" style="transition-delay:.1s">
+        <div class="ednum">02</div>
+        <div class="eddeg">Bachelor of Commerce</div>
+        <div class="edsch">Madras Christian College, India</div>
+        <div class="edyr">2021</div>
+        <div class="eddesc">Undergraduate foundation in commerce underpinning postgraduate sports management specialisation and professional career development.</div>
+      </div>
+      <div class="edcard reveal" style="transition-delay:.15s">
+        <div class="ednum">03</div>
+        <div class="eddeg">SFA Coaching Licences</div>
+        <div class="edsch">Scottish Football Association</div>
+        <div class="edyr">2024</div>
+        <div class="eddesc">Introduction to Coaching 1.1 &middot; Goalkeeping Coaching Certificate 1.2 &middot; Goalkeeping Coaching Award 1.3</div>
+        <div class="edbadge">SFA Qualified</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="s-in">
+    <div class="s-hd reveal"><div class="eye">Let's Connect</div><h2 class="stitle">CONTACT</h2></div>
+    <div class="cly">
+      <div class="reveal">
+        <p class="ctag2">Ready to bring <strong>operational excellence</strong> and a genuine passion for sport to your organisation.</p>
+        <div class="ccards">
+          <a href="mailto:hemanathsaravanamurthy@gmail.com" class="ccard">
+            <div class="cicon">&#9993;</div>
+            <div><div class="clbl">Email</div><div class="cval">hemanathsaravanamurthy@gmail.com</div></div>
+          </a>
+          <a href="https://linkedin.com/in/hemanaths01" target="_blank" class="ccard">
+            <div class="cicon">&#128188;</div>
+            <div><div class="clbl">LinkedIn</div><div class="cval">linkedin.com/in/hemanaths01</div></div>
+          </a>
+          <a href="tel:+919043847077" class="ccard">
+            <div class="cicon">&#128222;</div>
+            <div><div class="clbl">Phone</div><div class="cval">+91 9043847077</div></div>
+          </a>
+          <div class="ccard">
+            <div class="cicon">&#128205;</div>
+            <div><div class="clbl">Location</div><div class="cval">Chennai, India</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay:.12s">
+        <div class="cpitch">
+          <div class="cpbg"></div>
+          <svg class="cpsvg" viewBox="0 0 260 350" fill="none">
+            <rect x="15" y="15" width="230" height="320" stroke="#3dbb72" stroke-width="1.2"/>
+            <line x1="15" y1="175" x2="245" y2="175" stroke="#3dbb72" stroke-width="1"/>
+            <circle cx="130" cy="175" r="40" stroke="#3dbb72" stroke-width="1"/>
+            <circle cx="130" cy="175" r="3" fill="#3dbb72"/>
+            <rect x="55" y="15" width="120" height="55" stroke="#3dbb72" stroke-width=".8"/>
+            <rect x="85" y="15" width="60" height="22" stroke="#3dbb72" stroke-width=".6"/>
+            <rect x="55" y="280" width="120" height="55" stroke="#3dbb72" stroke-width=".8"/>
+            <rect x="85" y="313" width="60" height="22" stroke="#3dbb72" stroke-width=".6"/>
+          </svg>
+          <div class="cpheat"></div>
+          <div class="cptxt">OPEN TO OPPORTUNITIES &middot; 2025</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fn">Hemanath Saravanamurthy</div>
+  <div class="fm">Sports Operations &amp; Management &middot; Chennai, India</div>
+  <div class="fr">&copy; 2025</div>
+</footer>
+
+<script>
+// Cursor
+const C=document.getElementById('C'),CR=document.getElementById('CR');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+(function t(){C.style.left=mx+'px';C.style.top=my+'px';rx+=(mx-rx)*.11;ry+=(my-ry)*.11;CR.style.left=rx+'px';CR.style.top=ry+'px';requestAnimationFrame(t);})();
+document.querySelectorAll('a,button,.ecard,.edcard,.ctag,.stag,.ccard').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{C.style.width='14px';C.style.height='14px';CR.style.width='48px';CR.style.height='48px';});
+  el.addEventListener('mouseleave',()=>{C.style.width='8px';C.style.height='8px';CR.style.width='32px';CR.style.height='32px';});
+});
+
+// Nav scroll
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40));
+
+// Reveal on scroll
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// Pitch background canvas
+(function(){
+  const cv=document.getElementById('pitch-canvas');
+  const ctx=cv.getContext('2d');
+  function resize(){cv.width=innerWidth;cv.height=innerHeight;draw();}
+  function draw(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    const W=cv.width,H=cv.height;
+    const pw=Math.min(W*0.88,860),ph=pw*1.52;
+    const ox=(W-pw)/2,oy=(H-ph)/2;
+    ctx.strokeStyle='rgba(61,187,114,1)';ctx.lineWidth=.9;
+    ctx.strokeRect(ox,oy,pw,ph);
+    ctx.beginPath();ctx.moveTo(ox,oy+ph/2);ctx.lineTo(ox+pw,oy+ph/2);ctx.stroke();
+    ctx.beginPath();ctx.arc(ox+pw/2,oy+ph/2,pw*0.145,0,Math.PI*2);ctx.stroke();
+    ctx.beginPath();ctx.arc(ox+pw/2,oy+ph/2,3,0,Math.PI*2);ctx.fillStyle='rgba(61,187,114,1)';ctx.fill();
+    const pb_w=pw*.44,pb_h=ph*.15;
+    ctx.strokeRect(ox+(pw-pb_w)/2,oy,pb_w,pb_h);
+    ctx.strokeRect(ox+(pw-pb_w)/2,oy+ph-pb_h,pb_w,pb_h);
+    const gb_w=pw*.22,gb_h=ph*.06;
+    ctx.strokeRect(ox+(pw-gb_w)/2,oy,gb_w,gb_h);
+    ctx.strokeRect(ox+(pw-gb_w)/2,oy+ph-gb_h,gb_w,gb_h);
+    ctx.beginPath();ctx.arc(ox+pw/2,oy+ph*.13,3,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(ox+pw/2,oy+ph*.87,3,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(ox+pw/2,oy+pb_h,pw*.115,.2*Math.PI,.8*Math.PI);ctx.stroke();
+    ctx.beginPath();ctx.arc(ox+pw/2,oy+ph-pb_h,pw*.115,-.8*Math.PI,-.2*Math.PI);ctx.stroke();
+    const cr=pw*.025;
+    [[ox,oy],[ox+pw,oy],[ox,oy+ph],[ox+pw,oy+ph]].forEach(([cx2,cy2])=>{
+      const a=Math.atan2(oy+ph/2-cy2,ox+pw/2-cx2);
+      ctx.beginPath();ctx.arc(cx2,cy2,cr,a-.4,a+.4);ctx.stroke();
+    });
+  }
+  window.addEventListener('resize',resize);resize();
+})();
+
+// Passing network animation
+(function(){
+  const cv=document.getElementById('pass-canvas');
+  const ctx=cv.getContext('2d');
+  function resize(){cv.width=innerWidth;cv.height=innerHeight;}
+  window.addEventListener('resize',resize);resize();
+  const W=()=>cv.width,H=()=>cv.height;
+  const N=[
+    {x:.50,y:.88},
+    {x:.22,y:.72},{x:.40,y:.76},{x:.60,y:.76},{x:.78,y:.72},
+    {x:.25,y:.52},{x:.50,y:.54},{x:.75,y:.52},
+    {x:.18,y:.28},{x:.50,y:.24},{x:.82,y:.28},
+  ];
+  const E=[[0,1],[0,2],[0,3],[0,4],[1,5],[2,6],[3,6],[4,7],[5,8],[6,9],[7,10],[5,6],[6,7],[8,9],[9,10],[1,2],[3,4]];
+  class Pass{
+    constructor(f,t){this.f=f;this.t=t;this.p=Math.random();this.spd=.006+Math.random()*.005;}
+    step(){this.p+=this.spd;if(this.p>1.4)this.p=0;}
+    draw(){
+      const fx=N[this.f].x*W(),fy=N[this.f].y*H(),tx=N[this.t].x*W(),ty=N[this.t].y*H();
+      ctx.beginPath();ctx.moveTo(fx,fy);ctx.lineTo(tx,ty);
+      ctx.strokeStyle='rgba(61,187,114,0.05)';ctx.lineWidth=.7;ctx.stroke();
+      if(this.p<=1){
+        const px=fx+(tx-fx)*this.p,py=fy+(ty-fy)*this.p;
+        const a=Math.sin(this.p*Math.PI);
+        ctx.beginPath();ctx.arc(px,py,3,0,Math.PI*2);
+        ctx.fillStyle='rgba(61,187,114,'+a*.65+')';ctx.fill();
+        const g=ctx.createRadialGradient(px,py,0,px,py,10);
+        g.addColorStop(0,'rgba(61,187,114,'+a*.28+')');g.addColorStop(1,'transparent');
+        ctx.beginPath();ctx.arc(px,py,10,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
+      }
+    }
+  }
+  const passes=E.map(([f,t])=>{const p=new Pass(f,t);p.p=Math.random()*1.4;return p;});
+  function drawNodes(){
+    N.forEach(n=>{
+      const x=n.x*W(),y=n.y*H();
+      ctx.beginPath();ctx.arc(x,y,4.5,0,Math.PI*2);ctx.fillStyle='rgba(61,187,114,0.3)';ctx.fill();
+      ctx.beginPath();ctx.arc(x,y,2,0,Math.PI*2);ctx.fillStyle='rgba(61,187,114,0.65)';ctx.fill();
+    });
+  }
+  function frame(){ctx.clearRect(0,0,W(),H());passes.forEach(p=>{p.step();p.draw();});drawNodes();requestAnimationFrame(frame);}
+  frame();
+})();
+</script>
+</body>
+</html>
